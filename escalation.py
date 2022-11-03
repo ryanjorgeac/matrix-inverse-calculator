@@ -1,5 +1,7 @@
 from fractions import Fraction
 
+from TheresNoNotNullElementException import TheresNoNotNullElementException
+
 
 def escalation(matrix, sizeOfMatrix):
     pass
@@ -20,7 +22,9 @@ def multiplyLineToAchievePivot(matrix, indexLine):
 
     indexNotNull = findNotNull(matrix, indexLine)
     notNullNumber = matrix[indexLine][indexNotNull]
-    reverseOfNotNullNumber = Fraction(notNullNumber.denominator, notNullNumber.numerator)
+    reverseOfNotNullNumber = 1/notNullNumber
+
+    # use 1/x where x is the Fraction to be reverted
 
     for i in range(len(matrix[indexLine])):
         matrix[indexLine][i] = matrix[indexLine][i] * reverseOfNotNullNumber
@@ -34,4 +38,19 @@ def findNotNull(matrix, indexLine):
         if matrix[indexLine][i] != 0:
             return i
 
-    return len(matrix)
+    else:
+        raise TheresNoNotNullElementException("Non-invertible matrix")
+
+
+def multiplyTwoLines(matrix, indexLine, pivotLine):
+    if -len(matrix) > indexLine or indexLine >= len(matrix):
+        raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
+
+    elif -len(matrix) > pivotLine or pivotLine >= len(matrix):
+        raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
+
+    indexNotNull = findNotNull(matrix, indexLine)
+    notNullNumber = matrix[indexLine][indexNotNull]
+
+    for i in range(len(matrix[indexLine])):
+        matrix[indexLine][i] = matrix[indexLine][i] - (notNullNumber * matrix[pivotLine][i])
