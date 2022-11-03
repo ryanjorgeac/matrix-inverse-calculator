@@ -12,19 +12,30 @@ def makeMatrix(sizeOfMatrix):
 
     return matrix
 
+
 def askMatrix(sizeOfMatrix, userIO):
     matrixMade = makeMatrix(sizeOfMatrix)
     for i in range(sizeOfMatrix):
         for j in range(sizeOfMatrix):
             viewMatrix(sizeOfMatrix, matrixMade, userIO)
-            number = Fraction(userIO.input(f"Informe o número da posição Matriz L{i+1}, C{j+1}:\n"))
+            number = Fraction(userIO.input(f"Informe o número da posição Matriz L{i + 1}, C{j + 1}:\n"))
             matrixMade[i][j] = number
 
-
     return matrixMade
+
 
 def viewMatrix(sizeOfMatrix, matrix, userIO):
     for i in range(sizeOfMatrix):
         for j in range(sizeOfMatrix):
             userIO.print(matrix[i][j], end=" ")
         userIO.print("")
+
+
+def makeIdentityMatrix(sizeOfMatrix):
+    matrix = makeMatrix(sizeOfMatrix)
+    for i in range(sizeOfMatrix):
+        for j in range(sizeOfMatrix):
+            if i == j:
+                matrix[i][j] = 1
+
+    return matrix
