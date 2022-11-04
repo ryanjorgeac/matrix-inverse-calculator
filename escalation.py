@@ -1,4 +1,3 @@
-from fractions import Fraction
 from matrixAsker import *
 from TheresNoNotNullElementException import TheresNoNotNullElementException
 
@@ -6,15 +5,33 @@ from TheresNoNotNullElementException import TheresNoNotNullElementException
 def escalation(matrix):
     identityMatrix = makeIdentityMatrix(len(matrix))
     identityMatrixToCalculate = makeIdentityMatrix(len(matrix))
-    while matrix != identityMatrix:
-        if matrix[0][0] != 1:
-            lineOfPivot = lookForPivotInOtherLines(matrix, 0)
+    # while matrix != identityMatrix:
+
+    for i in range(len(matrix)):
+        if matrix[i][i] != 1:
+            lineOfPivot = lookForPivotInOtherLines(matrix, i)
             if lineOfPivot < len(matrix):
-                switchLines(matrix, identityMatrixToCalculate, 0, lineOfPivot)
-
+                switchLines(matrix, identityMatrixToCalculate, i, lineOfPivot)
+                putZerosInColumn(matrix, identityMatrixToCalculate, i)
             else:
-                multiplyLineToAchievePivot(matrix, identityMatrix, 0)
+                multiplyLineToAchievePivot(matrix, identityMatrixToCalculate, i)
+                putZerosInColumn(matrix, identityMatrixToCalculate, i)
 
+        else:
+            putZerosInColumn(matrix, identityMatrixToCalculate, i)
+
+    return matrix, identityMatrixToCalculate
+
+def putZerosInColumn(matrix, identityMatrix, position):
+    for i in range(len(matrix)):
+        if i == position:
+            continue
+
+        else:
+            valueToMultiply = matrix[i][position]
+            for j in range(len(matrix[i])):
+                matrix[i][j] = matrix[i][j] - (valueToMultiply*matrix[position][j])
+                identityMatrix[i][j] = identityMatrix[i][j] - (valueToMultiply * matrix[position][position])
 
 
 

@@ -119,6 +119,15 @@ def test_multiplyTwoLines_with_3_x_3_matrix():
     assert matriz[1] == [Fraction(-28, 1), Fraction(-51, 1), Fraction(-68, 1)]
                                                             # [Fraction(3, 1), Fraction(4, 1), Fraction(5, 1)]
 
+def test_multiplyTwoLines_with_3_x_3_matrix_1():
+    numbers = ["5", "4", "3", "2", "5", "14", "1/2", "0", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(3, i)                                        # [Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)]
+    identityMatrix = escalation.makeIdentityMatrix(3)
+    escalation.multiplyTwoLines(matriz, identityMatrix, 1, 0)                   # [Fraction(14, 1), Fraction(5, 1), Fraction(2, 1)]
+    assert matriz[1] == [Fraction(0, 1), Fraction(5, 1), Fraction(-5, 1)]
+                                                                                # [Fraction(3, 1), Fraction(4, 1), Fraction(5, 1)]
+
 def test_lookForPivotInOtherLine_1():
     numbers = ["5", "4", "3", "2", "5", "14", "1/2", "0", "13/3"]
     i = inputFake(numbers)
@@ -133,5 +142,40 @@ def test_lookForPivotInOtherLine_2():
     x = escalation.lookForPivotInOtherLines(matriz, 0)
     assert x == 0
 
+def test_putZerosInColumn_1():
+    numbers = ["5", "4", "3", "2", "5", "14", "1/2", "0", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(3, i)                        # [Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)]
+    identityMatrix = escalation.makeIdentityMatrix(3)           # [Fraction(14, 1), Fraction(5, 1), Fraction(2, 1)]
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)      # [Fraction(3, 1), Fraction(4, 1), Fraction(5, 1)]
+    assert matriz[1][0] == Fraction(0, 1) and matriz[2][0] == Fraction(0, 1) and matriz[0][0] == Fraction(1, 1)
+
+def test_putZerosInColumn_2():
+    numbers = ["1", "4", "3", "2", "1", "14", "1/2", "0", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(3, i)                        # [Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)]
+    identityMatrix = escalation.makeIdentityMatrix(3)           # [Fraction(14, 1), Fraction(1, 1), Fraction(2, 1)]
+    escalation.putZerosInColumn(matriz, identityMatrix, 1)      # [Fraction(3, 1), Fraction(4, 1), Fraction(1, 1)]
+    assert matriz[0][1] == Fraction(0, 1) and matriz[2][1] == Fraction(0, 1) and matriz[1][1] == Fraction(1, 1)
+
+
+def test_putZerosInColumn_3():
+    numbers = ["1", "4", "3", "2", "1", "14", "1/2", "0", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(3, i)                    # [Fraction(1, 1), Fraction(0, 1), Fraction(1, 2)]
+    identityMatrix = escalation.makeIdentityMatrix(3)       # [Fraction(14, 1), Fraction(5, 1), Fraction(2, 1)]
+    escalation.putZerosInColumn(matriz, identityMatrix, 2)  # [Fraction(3, 1), Fraction(4, 1), Fraction(1, 1)]
+    assert matriz[0][2] == Fraction(0, 1) and matriz[1][2] == Fraction(0, 1) and matriz[2][2] == Fraction(1, 1)
+
+
+def test_putZerosInColumn_5():
+    numbers = ["1", "4", "3", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(2, i)                    # [Fraction(4, 1), Fraction(3, 1)]
+    identityMatrix = escalation.makeIdentityMatrix(2)       # [Fraction(1, 1), Fraction(1, 1)]
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    assert matriz[1][0] == Fraction(0, 1) and matriz[1][1] == Fraction(-11, 1) and matriz[0][0] == Fraction(1, 1)
+
+
 if __name__ == "__main__":
-    test_escalation_findNotNull2()
+    test_putZerosInColumn_5()
