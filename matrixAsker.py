@@ -36,6 +36,6 @@ def makeIdentityMatrix(sizeOfMatrix):
     for i in range(sizeOfMatrix):
         for j in range(sizeOfMatrix):
             if i == j:
-                matrix[i][j] = 1
+                matrix[i][j] = Fraction(1, 1)
 
     return matrix
