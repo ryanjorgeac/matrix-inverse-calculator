@@ -31,7 +31,7 @@ def putZerosInColumn(matrix, identityMatrix, position):
             valueToMultiply = matrix[i][position]
             for j in range(len(matrix[i])):
                 matrix[i][j] = matrix[i][j] - (valueToMultiply*matrix[position][j])
-                identityMatrix[i][j] = identityMatrix[i][j] - (valueToMultiply * matrix[position][position])
+                identityMatrix[i][j] = identityMatrix[i][j] - (valueToMultiply * identityMatrix[position][j])
 
 
 
