@@ -208,20 +208,6 @@ def test_escalation_2x2():
                                                                             [Fraction(4, 3), Fraction(-1, 3)]]
 
 
-def test_escalation_4x4():
-    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
-    i = inputFake(numbers)
-    matriz = matrixAsker.askMatrix(4, i)
-    result = escalation.escalation(matriz)
-    assert result[0] == [[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
-                         [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
-                         [Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(0, 1)],
-                         [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)]] and result[1] == [[Fraction(-11, 1), Fraction(37, 14), Fraction(-23, 14), Fraction(1, 7)],
-                                                                                                             [Fraction(0, 1), Fraction(-9, 14), Fraction(9, 14), Fraction(-1, 7)],
-                                                                                                             [Fraction(2, 1), Fraction(-121, 14), Fraction(79, 14), Fraction(-1, 7)],
-                                                                                                             [Fraction(-1, 1), Fraction(43, 7), Fraction(-29, 7), Fraction(1, 7)]]
-
-
 def test_escalation_2x2_no_solution():
     numbers = ["0", "1", "0", "1"]
     i = inputFake(numbers)
@@ -234,6 +220,102 @@ def test_escalation_2x2_no_solution():
     except (Exception,):
         assert False
 
+# def test_escalation_4x4():
+#     numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+#     i = inputFake(numbers)
+#     matriz = matrixAsker.askMatrix(4, i)
+#     result = escalation.escalation(matriz)
+#     assert result[0] == [[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
+#                          [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
+#                          [Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(0, 1)],
+#                          [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)]] and result[1] == [[Fraction(-1, 1), Fraction(37, 14), Fraction(-23, 14), Fraction(1, 7)],
+#                                                                                                              [Fraction(0, 1), Fraction(-9, 14), Fraction(9, 14), Fraction(-1, 7)],
+#                                                                                                              [Fraction(2, 1), Fraction(-121, 14), Fraction(79, 14), Fraction(-1, 7)],
+#                                                                                                              [Fraction(-1, 1), Fraction(43, 7), Fraction(-29, 7), Fraction(1, 7)]]
+
+
+def test_escalation_4x4_makePivotOnColumn_0():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    escalation.makePivotOnColumn(matriz, escalation.makeIdentityMatrix(4), 0)
+    assert matriz[0] == [1 ,2 , 3,  4]
+
+
+def test_escalation_4x4_makePivotOnColumn_0_plus_putZerosInColumn():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    identityMatrix = escalation.makeIdentityMatrix(4)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 0)
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    assert matriz[1][0] == Fraction(0) and matriz[2][0] == Fraction(0) and matriz[3][0] == Fraction(0)
+
+
+def test_escalation_4x4_makePivotOnColumn_1():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    identityMatrix = escalation.makeIdentityMatrix(4)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 0)
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 1)
+    assert matriz[1] == [Fraction(0), Fraction(1), Fraction(7, 3), Fraction(10, 3)]
+
+
+def test_escalation_4x4_makePivotOnColumn_1_plus_putZerosInColumn():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    identityMatrix = escalation.makeIdentityMatrix(4)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 0)
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 1)
+    escalation.putZerosInColumn(matriz, identityMatrix, 1)
+    assert matriz[0][1] == Fraction(0) and matriz[2][1] == Fraction(0) and matriz[3][1] == Fraction(0)
+
+
+def test_escalation_4x4_makePivotOnColumn_2():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    identityMatrix = escalation.makeIdentityMatrix(4)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 0)
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 1)
+    escalation.putZerosInColumn(matriz, identityMatrix, 1)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 2)
+    assert matriz[2] == [Fraction(0), Fraction(0), Fraction(1), Fraction(1)]
+
+
+def test_escalation_4x4_makePivotOnColumn_2_plus_putZerosInColumn():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    identityMatrix = escalation.makeIdentityMatrix(4)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 0)
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 1)
+    escalation.putZerosInColumn(matriz, identityMatrix, 1)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 2)
+    escalation.putZerosInColumn(matriz, identityMatrix, 2)
+    assert matriz[0][2] == Fraction(0) and matriz[1][2] == Fraction(0) and matriz[3][2] == Fraction(0)
+
+
+def test_escalation_4x4_makePivotOnColumn_3():
+    numbers = ["9", "9", "2", "9", "8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, i)
+    identityMatrix = escalation.makeIdentityMatrix(4)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 0)
+    escalation.putZerosInColumn(matriz, identityMatrix, 0)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 1)
+    escalation.putZerosInColumn(matriz, identityMatrix, 1)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 2)
+    escalation.putZerosInColumn(matriz, identityMatrix, 2)
+    escalation.makePivotOnColumn(matriz, identityMatrix, 3)
+    assert matriz[3] == []
+
 
 if __name__ == "__main__":
-    test_escalation_4x4()
+    test_escalation_4x4_makePivotOnColumn_3()

@@ -2,31 +2,32 @@ from matrixAsker import *
 from TheresNoNotNullElementException import TheresNoNotNullElementException
 from nnInvertibleException import nnInvertibleException
 from CannotMultiplyLineToAchievePivotException import CannotMultiplyLineToAchievePivotException
+from CannotMakeAPivotOnColumnException import *
 
 
 def escalation(matrix):
     identityMatrixToCalculate = makeIdentityMatrix(len(matrix))
-    # while matrix != identityMatrix:
-
     for i in range(len(matrix)):
-        if matrix[i][i] != 1:
-            lineOfPivot = lookForPivotInOtherLines(matrix, i)
-            if lineOfPivot < len(matrix):
-                switchLines(matrix, identityMatrixToCalculate, i, lineOfPivot)
-                putZerosInColumn(matrix, identityMatrixToCalculate, i)
-            else:
-                try:
-                    multiplyLineToAchievePivot(matrix, identityMatrixToCalculate, i)
-
-                except CannotMultiplyLineToAchievePivotException:
-                    raise nnInvertibleException("Matriz não invertível.")
-
-                putZerosInColumn(matrix, identityMatrixToCalculate, i)
-
-        else:
+        try:
+            makePivotOnColumn(matrix, identityMatrixToCalculate, i)
             putZerosInColumn(matrix, identityMatrixToCalculate, i)
+        except CannotMakeAPivotOnColumnException:
+            raise nnInvertibleException("Matriz não invertível.")
 
     return matrix, identityMatrixToCalculate
+
+
+def makePivotOnColumn(matrix, identityMatrix, position):
+    if matrix[position][position] != 1:
+        lineOfPivot = lookForPivotInOtherLines(matrix, position)
+        if lineOfPivot < len(matrix):
+            switchLines(matrix, identityMatrix, position, lineOfPivot)
+        else:
+            try:
+                multiplyLineToAchievePivot(matrix, identityMatrix, position)
+
+            except CannotMultiplyLineToAchievePivotException:
+                raise CannotMakeAPivotOnColumnException("Matriz não invertível.")
 
 
 def putZerosInColumn(matrix, identityMatrix, position):
@@ -73,8 +74,6 @@ def multiplyLineToAchievePivot(matrix, identityMatrix, indexLine):
 
     notNullNumber = matrix[indexLine][indexNotNull]
     reverseOfNotNullNumber = 1/notNullNumber
-
-    # use 1/x where x is the Fraction to be reverted
 
     for i in range(len(matrix[indexLine])):
         matrix[indexLine][i] = matrix[indexLine][i] * reverseOfNotNullNumber
