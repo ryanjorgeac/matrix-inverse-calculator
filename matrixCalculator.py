@@ -1,6 +1,7 @@
 import inputIO
 from escalation import *
 
+
 def main(userIO):
     size = int(userIO.input("Informe o tamanho da Matriz: "))
     matriz = askMatrix(size, userIO)
