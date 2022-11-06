@@ -1,0 +1,2 @@
+class nnInvertibleException(Exception):
+    pass
