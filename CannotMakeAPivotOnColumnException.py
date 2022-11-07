@@ -1,0 +1,2 @@
+class CannotMakeAPivotOnColumnException(Exception):
+    pass
