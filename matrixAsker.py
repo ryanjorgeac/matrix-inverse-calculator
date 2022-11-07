@@ -18,8 +18,16 @@ def askMatrix(sizeOfMatrix, userIO):
     for i in range(sizeOfMatrix):
         for j in range(sizeOfMatrix):
             viewMatrix(matrixMade, userIO)
-            number = Fraction(userIO.input(f"Informe o número da posição Matriz L{i + 1}, C{j + 1}:\n"))
-            matrixMade[i][j] = number
+            while True:
+                number = userIO.input(f"Informe o número da posição Matriz L{i + 1}, C{j + 1}:\n")
+                if not number:
+                    number = "0"
+                try:
+                    matrixMade[i][j] = Fraction(number)
+                    break
+                except ValueError as error:
+                    print("Esse tipo de entrada não é permitido, informe o dado corretamente.")
+                    continue
 
     return matrixMade
 
