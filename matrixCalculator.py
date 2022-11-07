@@ -5,7 +5,6 @@ from escalation import *
 def main(userIO):
     size = int(userIO.input("Informe o tamanho da Matriz: "))
     matriz = askMatrix(size, userIO)
-    viewMatrix(matriz, userIO)
     print("\n\n")
     try:
         result = escalation(matriz)
