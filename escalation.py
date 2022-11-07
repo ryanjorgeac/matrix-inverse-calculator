@@ -3,9 +3,11 @@ from TheresNoNotNullElementException import TheresNoNotNullElementException
 from nnInvertibleException import nnInvertibleException
 from CannotMultiplyLineToAchievePivotException import CannotMultiplyLineToAchievePivotException
 from CannotMakeAPivotOnColumnException import *
+from copy import *
 
 
 def escalation(matrix):
+    copyOfMatrix = deepcopy(matrix)
     identityMatrixToCalculate = makeIdentityMatrix(len(matrix))
     for i in range(len(matrix)):
         try:
@@ -14,20 +16,16 @@ def escalation(matrix):
         except CannotMakeAPivotOnColumnException:
             raise nnInvertibleException("Matriz não invertível.")
 
-    return matrix, identityMatrixToCalculate
+    return copyOfMatrix, identityMatrixToCalculate
 
 
 def makePivotOnColumn(matrix, identityMatrix, position):
     if matrix[position][position] != 1:
-        lineOfPivot = lookForPivotInOtherLines(matrix, position)
-        if lineOfPivot < len(matrix):
-            switchLines(matrix, identityMatrix, position, lineOfPivot)
-        else:
-            try:
-                multiplyLineToAchievePivot(matrix, identityMatrix, position)
+        try:
+            multiplyLineToAchievePivot(matrix, identityMatrix, position)
 
-            except CannotMultiplyLineToAchievePivotException:
-                raise CannotMakeAPivotOnColumnException("Matriz não invertível.")
+        except CannotMultiplyLineToAchievePivotException:
+            raise CannotMakeAPivotOnColumnException("Matriz não invertível.")
 
 
 def putZerosInColumn(matrix, identityMatrix, position):
@@ -40,26 +38,6 @@ def putZerosInColumn(matrix, identityMatrix, position):
             for j in range(len(matrix[i])):
                 matrix[i][j] = matrix[i][j] - (valueToMultiply*matrix[position][j])
                 identityMatrix[i][j] = identityMatrix[i][j] - (valueToMultiply * identityMatrix[position][j])
-
-
-def lookForPivotInOtherLines(matrix, position):
-    for i in range(len(matrix)):
-        if matrix[i][position] == 1:
-            return i
-    else:
-        return len(matrix)
-
-
-def switchLines(matrix, identityMatrix,  indexLine1, indexLine2):
-    if -len(matrix) > indexLine1 or indexLine1 >= len(matrix):
-        raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
-
-    elif -len(matrix) > indexLine2 or indexLine2 >= len(matrix):
-        raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
-
-    else:
-        matrix[indexLine1], matrix[indexLine2] = matrix[indexLine2], matrix[indexLine1]
-        identityMatrix[indexLine1], identityMatrix[indexLine2] = identityMatrix[indexLine2], identityMatrix[indexLine1]
 
 
 def multiplyLineToAchievePivot(matrix, identityMatrix, indexLine):
@@ -90,18 +68,3 @@ def findNotNull(matrix, indexLine):
 
     else:
         raise TheresNoNotNullElementException("Há somente elementos nulos")
-
-
-# def multiplyTwoLines(matrix, identityMatrix, indexLine, pivotLine):
-#     if -len(matrix) > indexLine or indexLine >= len(matrix):
-#         raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
-#
-#     elif -len(matrix) > pivotLine or pivotLine >= len(matrix):
-#         raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
-#
-#     indexNotNull = findNotNull(matrix, indexLine)
-#     notNullNumber = matrix[indexLine][indexNotNull]
-#
-#     for i in range(len(matrix[indexLine])):
-#         matrix[indexLine][i] = matrix[indexLine][i] - (notNullNumber * matrix[pivotLine][i])
-#         identityMatrix[indexLine][i] = identityMatrix[indexLine][i] - (notNullNumber * identityMatrix[pivotLine][i])
