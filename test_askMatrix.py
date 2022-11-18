@@ -3,21 +3,34 @@ from fractions import Fraction
 
 
 def test_askMatrix_1():
-    x = matrixAsker.makeMatrix(1)
+    x = matrixAsker.makeMatrix(1, 1)
     assert x == [[0]]
 
 
 def test_askMatrix_2():
-    x = matrixAsker.makeMatrix(2)
+    x = matrixAsker.makeMatrix(2, 2)
     assert x == [[0, 0],
                  [0, 0]]
 
 
 def test_askMatrix_3():
-    x = matrixAsker.makeMatrix(3)
+    x = matrixAsker.makeMatrix(3, 3)
     assert x == [[0, 0, 0],
                  [0, 0, 0],
                  [0, 0, 0]]
+
+def test_askMatrix_not_square():
+    x = matrixAsker.makeMatrix(3, 4)
+    assert x == [[0, 0, 0, 0],
+                 [0, 0, 0, 0],
+                 [0, 0, 0, 0]]
+
+def test_askMatrix_not_square2():
+    x = matrixAsker.makeMatrix(4, 2)
+    assert x == [[0, 0],
+                 [0, 0],
+                 [0, 0],
+                 [0, 0]]
 
 
 def test_makeIdentityMatrix_1():

@@ -18,6 +18,10 @@ def escalation(matrix):
 
     return copyOfMatrix, identityMatrixToCalculate
 
+def escalationOfAugmentedMatrix(augmentedMatrix):
+    for i in range(len(augmentedMatrix)):
+        pass
+
 
 def makePivotOnColumn(matrix, identityMatrix, position):
     if matrix[position][position] != 1:

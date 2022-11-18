@@ -3,8 +3,9 @@ from escalation import *
 
 
 def main(userIO):
-    size = int(userIO.input("Informe o tamanho da Matriz: "))
-    matriz = askMatrix(size, userIO)
+    howManyLines = int(userIO.input("Informe a quantidade de linhas da Matriz: "))
+    howManyColumns = int(userIO.input("Informe a quantidade de colunas da Matriz: "))
+    matriz = askMatrix(howManyLines, howManyColumns, userIO)
     print("\n\n")
     try:
         result = escalation(matriz)

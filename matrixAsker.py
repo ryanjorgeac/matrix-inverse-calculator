@@ -1,22 +1,22 @@
 from fractions import Fraction
 
 
-def makeMatrix(sizeOfMatrix):
-    if sizeOfMatrix <= 0:
+def makeMatrix(quantLines, quantColumns):
+    if quantLines <= 0 or quantColumns <= 0:
         raise ValueError("O tamanho da matriz precisa ser um valor positivo maior que 0")
     matrix = []
-    for i in range(sizeOfMatrix):
+    for i in range(quantLines):
         matrix.append([])
-        for j in range(sizeOfMatrix):
+        for j in range(quantColumns):
             matrix[i].append(Fraction(0))
 
     return matrix
 
 
-def askMatrix(sizeOfMatrix, userIO):
-    matrixMade = makeMatrix(sizeOfMatrix)
-    for i in range(sizeOfMatrix):
-        for j in range(sizeOfMatrix):
+def askMatrix(quantLines, quantColumns, userIO):
+    matrixMade = makeMatrix(quantLines, quantColumns)
+    for i in range(quantLines):
+        for j in range(quantColumns):
             viewMatrix(matrixMade, userIO)
             while True:
                 number = userIO.input(f"Informe o número da posição Matriz L{i + 1}, C{j + 1}:\n")
@@ -40,7 +40,7 @@ def viewMatrix(matrix, userIO):
 
 
 def makeIdentityMatrix(sizeOfMatrix):
-    matrix = makeMatrix(sizeOfMatrix)
+    matrix = makeMatrix(sizeOfMatrix, sizeOfMatrix)
     for i in range(sizeOfMatrix):
         matrix[i][i] = Fraction(1)
 
