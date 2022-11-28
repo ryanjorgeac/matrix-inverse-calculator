@@ -1,4 +1,5 @@
 from fractions import Fraction
+from matrix import Matrix
 
 
 def makeMatrix(quantLines, quantColumns):
@@ -10,7 +11,7 @@ def makeMatrix(quantLines, quantColumns):
         for j in range(quantColumns):
             matrix[i].append(Fraction(0))
 
-    return matrix
+    return Matrix(matrix)
 
 
 def askMatrix(quantLines, quantColumns, userIO):
@@ -33,8 +34,8 @@ def askMatrix(quantLines, quantColumns, userIO):
 
 
 def viewMatrix(matrix, userIO):
-    for i in range(len(matrix)):
-        for j in range(len(matrix)):
+    for i in range(matrix.numberOfLines()):
+        for j in range(matrix.numberOfColumns()):
             userIO.print(matrix[i][j], end=" ")
         userIO.print("")
 

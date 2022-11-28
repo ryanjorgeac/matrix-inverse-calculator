@@ -17,13 +17,13 @@ class inputFake:
 def test_viewMatrix_1():
     numbers = ["5"]
     i = inputFake(numbers)
-    a = askMatrix(1, i)
+    a = askMatrix(1, 1, i)
     v = viewMatrix(a, i)
     assert i.outputList == [Fraction(0, 1), "", Fraction(5, 1), ""]
 
 def test_viewMatrix_2():
     numbers = ["5", "4", "3", "2"]
     i = inputFake(numbers)
-    a = askMatrix(2, i)
+    a = askMatrix(2, 2, i)
     v = viewMatrix(a, i)
     assert i.outputList == [0, 0, "", 0, 0, "", 2, 0, "", 0, 0, "", 2, 3, "", 0, 0, "", 2, 3, "", 4, 0, "", 2, 3, "", 4, 5, ""]
