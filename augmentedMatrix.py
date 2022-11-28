@@ -4,7 +4,7 @@ class AugmentedMatrix:
         self.matrix2 = matrix2
 
     def __len__(self):
-        return len(self.matrix1)
+        return self.matrix1.numberOfLines()
 
     def __getitem__(self, item):
         class LineOfAugmentedMatrix:
