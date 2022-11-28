@@ -1,74 +1,70 @@
+import augmentedMatrix
 from matrixAsker import *
 from TheresNoNotNullElementException import TheresNoNotNullElementException
 from nnInvertibleException import nnInvertibleException
 from CannotMultiplyLineToAchievePivotException import CannotMultiplyLineToAchievePivotException
 from CannotMakeAPivotOnColumnException import *
 from copy import *
+from augmentedMatrix import AugmentedMatrix
+from elementaryOperation import *
+from maybe import *
 
 
 def escalation(matrix):
     copyOfMatrix = deepcopy(matrix)
-    identityMatrixToCalculate = makeIdentityMatrix(len(matrix))
-    for i in range(len(matrix)):
+    identityMatrixToCalculate = makeIdentityMatrix(matrix.numberOfLines())
+    augmentedMatrixToCalculate = augmentedMatrix.AugmentedMatrix(copyOfMatrix, identityMatrixToCalculate)
+    return escalationOfAugmentedMatrix(augmentedMatrixToCalculate)
+
+
+def makePivotOnColumn(augMatrix, position):
+    if augMatrix[position][position] != 0:
         try:
-            makePivotOnColumn(matrix, identityMatrixToCalculate, i)
-            putZerosInColumn(matrix, identityMatrixToCalculate, i)
-        except CannotMakeAPivotOnColumnException:
-            raise nnInvertibleException("Matriz não invertível.")
-
-    return copyOfMatrix, identityMatrixToCalculate
-
-def escalationOfAugmentedMatrix(augmentedMatrix):
-    for i in range(len(augmentedMatrix)):
-        pass
-
-
-def makePivotOnColumn(matrix, identityMatrix, position):
-    if matrix[position][position] != 1:
-        try:
-            multiplyLineToAchievePivot(matrix, identityMatrix, position)
+            multiplyLineToAchievePivot(augMatrix, position)
 
         except CannotMultiplyLineToAchievePivotException:
             raise CannotMakeAPivotOnColumnException("Matriz não invertível.")
 
 
-def putZerosInColumn(matrix, identityMatrix, position):
-    for i in range(len(matrix)):
+def putZerosInColumn(augMatrix, position):
+    for i in range(len(augMatrix)):
         if i == position:
             continue
 
         else:
-            valueToMultiply = matrix[i][position]
-            for j in range(len(matrix[i])):
-                matrix[i][j] = matrix[i][j] - (valueToMultiply*matrix[position][j])
-                identityMatrix[i][j] = identityMatrix[i][j] - (valueToMultiply * identityMatrix[position][j])
+            valueToMultiply = -augMatrix[i][position]
+            operation = addToOneRowAScalarMultipleOfAnother(valueToMultiply, i, position)
+            augMatrix.applyElementaryOperations(operation)
 
 
-def multiplyLineToAchievePivot(matrix, identityMatrix, indexLine):
-    if -len(matrix) > indexLine or indexLine >= len(matrix):
+def multiplyLineToAchievePivot(augMatrix, indexLine):
+    if -len(augMatrix) > indexLine or indexLine >= len(augMatrix):
         raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
 
-    try:
-        indexNotNull = findNotNull(matrix, indexLine)
+    maybeIndex = findNotNull(augMatrix.firstMatrix(), indexLine)
+    indexNotNull = maybeIndex.orElseThrow(CannotMultiplyLineToAchievePivotException(
+        "Não foi possível multiplicar a linha para encontrar o pivô.")
+    )
 
-    except TheresNoNotNullElementException:
-        raise CannotMultiplyLineToAchievePivotException("Não foi possível multiplicar a linha para encontrar o pivô.")
-
-    notNullNumber = matrix[indexLine][indexNotNull]
+    notNullNumber = augMatrix[indexLine][indexNotNull]
     reverseOfNotNullNumber = 1/notNullNumber
 
-    for i in range(len(matrix[indexLine])):
-        matrix[indexLine][i] = matrix[indexLine][i] * reverseOfNotNullNumber
-        identityMatrix[indexLine][i] = identityMatrix[indexLine][i] * reverseOfNotNullNumber
+    operation = multiplyRowByANonZeroScalar(reverseOfNotNullNumber, indexLine)
+    augMatrix.applyElementaryOperations(operation)
 
 
 def findNotNull(matrix, indexLine):
-    if -len(matrix) > indexLine or indexLine >= len(matrix):
-        raise ValueError("O índex da linha a ser alterada é inexistente na matriz.")
-
-    for i in range(len(matrix)):
+    for i in range(matrix.numberOfLines()):
         if matrix[indexLine][i] != 0:
-            return i
+            return just(i)
 
-    else:
-        raise TheresNoNotNullElementException("Há somente elementos nulos")
+    return nothing()
+
+
+def escalationOfAugmentedMatrix(augMatrix):
+    column = 0
+    for i in range(len(augMatrix)):
+        makePivotOnColumn(augMatrix, i)
+        putZerosInColumn(augMatrix, i)
+
+    return augMatrix
