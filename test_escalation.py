@@ -268,5 +268,35 @@ def test_putZerosInColumn_8():
                                   [Fraction(1, 1), Fraction(9, 1)]]
 
 
+def test_escalation1():
+    numbers = ["8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(3, 4, i)
+    result = escalation.escalation(matriz)
+    assert result.firstMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(0, 1)]])
+
+def test_escalation_2():
+    numbers = ["8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, 3, i)
+    result = escalation.escalation(matriz)
+    assert result.firstMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)]])          
+
+def test_escalation_3():
+    numbers = ["8", "0", "7", "6", "6", "0", "5", "4", "4", "0", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, 4, i)
+    result = escalation.escalation(matriz)
+    assert result.firstMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)]])                       
+
+
 if __name__ == "__main__":
     test_escalation_4x4()

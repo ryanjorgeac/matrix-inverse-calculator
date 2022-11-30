@@ -79,13 +79,15 @@ def escalationOfAugmentedMatrix(augMatrix):
                 TheresNoNotNullElementException("Não há elementos não nulos"))
             operation = elementaryOperation.swapTwoRows(i, indexNotNull)
             augMatrix.applyElementaryOperations(operation)
+            makePivotOnColumn(augMatrix, i, column)
+            putZerosInColumn(augMatrix, i, column)
         except TheresNoNotNullElementException:
             column += 1
             continue
-
-        makePivotOnColumn(augMatrix, i, column)
-        putZerosInColumn(augMatrix, i, column)
-
+        except CannotMakeAPivotOnColumnException as error:
+            column += 1
+            continue
+           
         column, i = column + 1, i + 1
 
     return augMatrix
