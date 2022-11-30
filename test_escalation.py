@@ -269,4 +269,4 @@ def test_putZerosInColumn_8():
 
 
 if __name__ == "__main__":
-    pass
+    test_escalation_4x4()

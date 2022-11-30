@@ -34,7 +34,7 @@ def putZerosInColumn(augMatrix, line, column):
 
         else:
             valueToMultiply = -augMatrix[i][column]
-            operation = addToOneRowAScalarMultipleOfAnother(valueToMultiply, i, column)
+            operation = addToOneRowAScalarMultipleOfAnother(valueToMultiply, i, line)
             augMatrix.applyElementaryOperations(operation)
 
 
