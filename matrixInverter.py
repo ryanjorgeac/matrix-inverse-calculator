@@ -1,5 +1,4 @@
 from copy import deepcopy
-
 import augmentedMatrix
 import escalation
 from matrixAsker import makeIdentityMatrix
