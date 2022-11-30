@@ -1,8 +1,9 @@
 import inputIO
 from escalation import escalation
 from matrixAsker import viewMatrix, askMatrix
-import nnInvertibleException
+from nnInvertibleException import nnInvertibleException
 from matrixInverter import inverter
+
 
 def main(userIO):
     menu()
@@ -12,23 +13,37 @@ def main(userIO):
             Até logo :)''')
         return
 
-    howManyLines = int(userIO.input("Informe a quantidade de linhas da Matriz: "))
-    howManyColumns = int(userIO.input("Informe a quantidade de colunas da Matriz: "))
-    matriz = askMatrix(howManyLines, howManyColumns, userIO)
-    print("\n\n")
-    print("Matriz: ")
-    viewMatrix(matriz, userIO)
-    print("")
+    elif opcao == "2":
+        howManyLines = int(userIO.input("Informe a quantidade de linhas da Matriz: "))
+        howManyColumns = int(userIO.input("Informe a quantidade de colunas da Matriz: "))
+        matriz = askMatrix(howManyLines, howManyColumns, userIO)
 
-    if opcao == "2":
+        print("\n\n")
+        print("Matriz: ")
+        viewMatrix(matriz, userIO)
+        print("")
+
         result = escalation(matriz)
         print("Matriz Escalonada: ")
         viewMatrix(result.firstMatrix(), userIO)
 
     elif opcao == "1":
-        result = inverter(matriz).orElseThrow(nnInvertibleException("Matriz não invertível."))
-        print("Matriz Inversa: ")
-        viewMatrix(result, userIO)
+        matrixOrder = int(userIO.input("Informe a ordem da Matriz: "))
+        matriz = askMatrix(matrixOrder, matrixOrder, userIO)
+
+        print("\n\n")
+        print("Matriz: ")
+        viewMatrix(matriz, userIO)
+        print("")
+
+        try:
+            result = inverter(matriz).orElseThrow(nnInvertibleException("Matriz não invertível."))
+            print("Matriz Inversa: ")
+            viewMatrix(result, userIO)
+        except nnInvertibleException:
+            print("Matriz não invertível.")
+            return
+
 
 def menu():
     print('''
