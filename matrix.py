@@ -11,6 +11,9 @@ class Matrix:
     def __eq__(self, otherMatrix):
         return self.matrix == otherMatrix.matrix
 
+    def getMatrix(self):
+        return self.matrix
+
     def numberOfLines(self):
         return len(self.matrix)
 
