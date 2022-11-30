@@ -26,5 +26,5 @@ class addToOneRowAScalarMultipleOfAnother(ElementaryOperation):
 
     def apply(self, matrix):
         matrix[self.lineToBeIncremented] = [self.scalar * matrix[self.lineToBeMultiplied][i]
-                                            +matrix[self.lineToBeIncremented][i] for i in range
+                                            + matrix[self.lineToBeIncremented][i] for i in range
                                             (len(matrix[self.lineToBeMultiplied]))]
