@@ -1,0 +1,2 @@
+class CannotMultiplyLineToAchievePivotException(Exception):
+    pass
