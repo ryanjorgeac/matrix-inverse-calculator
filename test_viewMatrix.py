@@ -1,5 +1,4 @@
 from matrixAsker import *
-import inputIO
 
 
 class inputFake:
