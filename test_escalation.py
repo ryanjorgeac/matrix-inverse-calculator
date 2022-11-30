@@ -2,9 +2,7 @@ import augmentedMatrix
 import escalation
 import matrixAsker
 from fractions import Fraction
-
 import maybe
-from nnInvertibleException import nnInvertibleException
 from TheresNoNotNullElementException import TheresNoNotNullElementException
 from matrix import Matrix
 
@@ -273,9 +271,9 @@ def test_escalation1():
     i = inputFake(numbers)
     matriz = matrixAsker.askMatrix(3, 4, i)
     result = escalation.escalation(matriz)
-    assert result.firstMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
-                                            [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
-                                            [Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(0, 1)]])
+    assert result.firstMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(-1, 1)],
+                                            [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(1, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(1, 1), Fraction(1, 1)]])
 
 def test_escalation_2():
     numbers = ["8", "7", "7", "6", "6", "5", "5", "4", "4", "3", "2", "1"]
@@ -290,13 +288,47 @@ def test_escalation_2():
 def test_escalation_3():
     numbers = ["8", "0", "7", "6", "6", "0", "5", "4", "4", "0", "2", "1"]
     i = inputFake(numbers)
-    matriz = matrixAsker.askMatrix(4, 4, i)
+    matriz = matrixAsker.askMatrix(3, 4, i)
     result = escalation.escalation(matriz)
     assert result.firstMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
                                             [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
-                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)],
-                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)]])                       
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)]])
+
+def test_escalation_third_column_full_of_zeros():
+    numbers = ["8", "0", "7", "6", "6", "0", "5", "4", "4", "0", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(3, 4, i)
+    result = escalation.escalation(matriz)
+    assert result.firstMatrix().getMatrix() == Matrix([[Fraction(1, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(1, 1), Fraction(0, 1), Fraction(0, 1)],
+                                            [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)],]).getMatrix()
+
+def test_escalation_4x3_askMatrix_4_lines():
+    numbers = ["8", "0", "7", "6", "6", "0", "5", "4", "4", "0", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, 3, i)
+    assert matriz.numberOfLines() == 4
+
+def test_escalation_4x3_askMatrix_3_columns():
+    numbers = ["8", "0", "7", "6", "6", "0", "5", "4", "4", "0", "2", "1"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(4, 3, i)
+    assert matriz.numberOfColumns() == 3
+
+def test_findNotNullOnLine_1():
+    numbers = ["2/3", "0", "0", "0"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(1, 4, i)
+    notNullIndex = escalation.findNotNullOnLine(matriz, 0)
+    assert maybe.isJust(notNullIndex)
+
+def test_findNotNullOnLine_2():
+    numbers = ["2/3", "0", "0", "0"]
+    i = inputFake(numbers)
+    matriz = matrixAsker.askMatrix(1, 4, i)
+    notNullIndex = escalation.findNotNullOnLine(matriz, 0)
+    assert notNullIndex.value == 3
 
 
 if __name__ == "__main__":
-    test_escalation_4x4()
+    test_escalation_third_column_full_of_zeros()

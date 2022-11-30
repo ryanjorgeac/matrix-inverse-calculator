@@ -2,11 +2,8 @@ import augmentedMatrix
 import elementaryOperation
 from matrixAsker import *
 from TheresNoNotNullElementException import TheresNoNotNullElementException
-from nnInvertibleException import nnInvertibleException
 from CannotMultiplyLineToAchievePivotException import CannotMultiplyLineToAchievePivotException
 from CannotMakeAPivotOnColumnException import *
-from copy import *
-from augmentedMatrix import AugmentedMatrix
 from elementaryOperation import *
 from maybe import *
 
@@ -55,7 +52,7 @@ def multiplyLineToAchievePivot(augMatrix, indexLine):
 
 
 def findNotNullOnLine(matrix, indexLine):
-    for i in range(matrix.numberOfLines()):
+    for i in range(matrix.numberOfColumns()):
         if matrix[indexLine][i] != 0:
             return just(i)
 
@@ -84,7 +81,7 @@ def escalationOfAugmentedMatrix(augMatrix):
         except TheresNoNotNullElementException:
             column += 1
             continue
-        except CannotMakeAPivotOnColumnException as error:
+        except CannotMakeAPivotOnColumnException:
             column += 1
             continue
            
